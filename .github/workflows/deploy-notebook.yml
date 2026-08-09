@@ -33,7 +33,7 @@ jobs:
       run: |
         DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
         DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
-        DEST_BASE="/smartdatayml2"
+        DEST_BASE="/smartdatayml3"
         for file in notebooks_to_deploy/*.py; do
           name=$(basename "$file" .py)
           dest_path="$DEST_BASE/$name"
@@ -88,7 +88,7 @@ jobs:
       run: |
         DEST_HOST=${{ secrets.DATABRICKS_DEST_HOST }}
         DEST_TOKEN=${{ secrets.DATABRICKS_DEST_TOKEN }}
-        CLUSTER_NAME="Cluster_SD"
+        CLUSTER_NAME="cluster_SD"
         
         echo "Buscando cluster existente: $CLUSTER_NAME"
         
@@ -131,8 +131,11 @@ jobs:
               "task_key": "prepambiente",
               "description": "Ejecuta notebook prepambiente",
               "notebook_task": {
-                "notebook_path": "/smartdatayml2/1.Preparacion_Ambiente",
-                "source": "WORKSPACE"
+                "notebook_path": "/smartdatayml3/1.Preparacion_Ambiente",
+                "source": "WORKSPACE",
+                "base_parameters": {
+                  "storageName": "sasmartdata010826ke"
+                }
               },
               "existing_cluster_id": "$CLUSTER_ID",
               "timeout_seconds": 3600,
@@ -142,8 +145,14 @@ jobs:
               "task_key": "ingest_circuits",
               "description": "Ejecuta notebook ingest_circuits",
               "notebook_task": {
-                "notebook_path": "/smartdatayml2/2.Ingest_circuits_data",
-                "source": "WORKSPACE"
+                "notebook_path": "/smartdatayml3/2.Ingest_circuits_data",
+                "source": "WORKSPACE",
+                "base_parameters": {
+                  "container": "raw",
+                  "catalogo": "catalog_au",
+                  "esquema": "bronze",
+                  "storageName": "sasmartdata010826ke"
+                }
               },
               "existing_cluster_id": "$CLUSTER_ID",
               "timeout_seconds": 3600,
@@ -158,8 +167,14 @@ jobs:
               "task_key": "ingest_constructors",
               "description": "Ejecuta notebook ingest_constructors",
               "notebook_task": {
-                "notebook_path": "/smartdatayml2/2.Ingest_Constructors",
-                "source": "WORKSPACE"
+                "notebook_path": "/smartdatayml3/2.Ingest_Constructors",
+                "source": "WORKSPACE",
+                "base_parameters": {
+                  "container": "raw",
+                  "catalogo": "catalog_au",
+                  "esquema": "bronze",
+                  "storageName": "sasmartdata010826ke"
+                }
               },
               "existing_cluster_id": "$CLUSTER_ID",
               "timeout_seconds": 3600,
@@ -174,8 +189,14 @@ jobs:
               "task_key": "ingest_racing",
               "description": "Ejecuta notebook ingest_racing",
               "notebook_task": {
-                "notebook_path": "/smartdatayml2/2.Ingest_racing_data",
-                "source": "WORKSPACE"
+                "notebook_path": "/smartdatayml3/2.Ingest_racing_data",
+                "source": "WORKSPACE",
+                "base_parameters": {
+                  "container": "raw",
+                  "catalogo": "catalog_au",
+                  "esquema": "bronze",
+                  "storageName": "sasmartdata010826ke"
+                }
               },
               "existing_cluster_id": "$CLUSTER_ID",
               "timeout_seconds": 3600,
@@ -190,8 +211,13 @@ jobs:
               "task_key": "transform",
               "description": "Ejecuta notebook transform",
               "notebook_task": {
-                "notebook_path": "/smartdatayml2/3.Transform",
-                "source": "WORKSPACE"
+                "notebook_path": "/smartdatayml3/3.Transform",
+                "source": "WORKSPACE",
+                "base_parameters": {
+                  "catalogo": "catalog_au",
+                  "esquema_source": "bronze",
+                  "esquema_sink": "silver"
+                }
               },
               "existing_cluster_id": "$CLUSTER_ID",
               "timeout_seconds": 3600,
@@ -212,8 +238,13 @@ jobs:
               "task_key": "load",
               "description": "Ejecuta notebook load",
               "notebook_task": {
-                "notebook_path": "/smartdatayml2/4.Load",
-                "source": "WORKSPACE"
+                "notebook_path": "/smartdatayml3/4.Load",
+                "source": "WORKSPACE",
+                "base_parameters": {
+                  "catalogo": "catalog_au",
+                  "esquema_source": "silver",
+                  "esquema_sink": "golden"
+                }
               },
               "existing_cluster_id": "$CLUSTER_ID",
               "timeout_seconds": 3600,
@@ -228,7 +259,7 @@ jobs:
               "task_key": "grants",
               "description": "Ejecuta notebook grants",
               "notebook_task": {
-                "notebook_path": "/smartdatayml2/5.Grants_Medallion",
+                "notebook_path": "/smartdatayml3/5.Grants_Medallion",
                 "source": "WORKSPACE"
               },
               "existing_cluster_id": "$CLUSTER_ID",
@@ -258,7 +289,7 @@ jobs:
             "environment": "production",
             "created_by": "github_actions",
             "project": "automated_deployment",
-            "cluster_used": "Cluster_SD"
+            "cluster_used": "cluster_SD"
           }
         }
         EOF
@@ -323,7 +354,7 @@ jobs:
           echo ""
           echo "🖥️  Cluster configurado:"
           echo "Cluster ID: $(echo "$job_details" | jq -r '.settings.tasks[0].existing_cluster_id')"
-          echo "Cluster Name: Cluster_SD (reutilizado)"
+          echo "Cluster Name: cluster_SD (reutilizado)"
           
         else
           echo "❌ No se pudo encontrar el workflow creado"
@@ -466,7 +497,7 @@ jobs:
         echo "✅ Tareas configuradas:"
         echo "   - tarea1_notebook1 (ntbk_1)"
         echo "   - tarea2_notebook2 (ntbk_2)"
-        echo "✅ Cluster existente: Cluster_SD configurado"
+        echo "✅ Cluster existente: cluster_SD configurado"
         echo "🚀 Workflow ejecutado automáticamente"
         echo ""
         echo "🔗 Accede a tu workspace de Databricks para ver los resultados detallados"
