@@ -105,7 +105,7 @@ jobs:
                 "notebook_path": "/smartdatayml1/1.Preparacion_Ambiente",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "existing_cluster_id": "job_cluster_smartdata",
               "timeout_seconds": 3600,
               "max_retries": 2
             },
@@ -116,7 +116,7 @@ jobs:
                 "notebook_path": "/smartdatayml1/2.Ingest_circuits_data",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "existing_cluster_id": "job_cluster_smartdata",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -132,7 +132,7 @@ jobs:
                 "notebook_path": "/smartdatayml1/2.Ingest_Constructors",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "existing_cluster_id": "job_cluster_smartdata",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -148,7 +148,7 @@ jobs:
                 "notebook_path": "/smartdatayml1/2.Ingest_racing_data",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "existing_cluster_id": "job_cluster_smartdata",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -164,7 +164,7 @@ jobs:
                 "notebook_path": "/smartdatayml1/3.Transform",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "existing_cluster_id": "job_cluster_smartdata",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -186,7 +186,7 @@ jobs:
                 "notebook_path": "/smartdatayml1/4.Load",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "existing_cluster_id": "job_cluster_smartdata",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
@@ -202,7 +202,7 @@ jobs:
                 "notebook_path": "/smartdatayml1/5.Grants_Medallion",
                 "source": "WORKSPACE"
               },
-              "existing_cluster_id": "$CLUSTER_ID",
+              "existing_cluster_id": "job_cluster_smartdata",
               "timeout_seconds": 3600,
               "max_retries": 2,
               "depends_on": [
